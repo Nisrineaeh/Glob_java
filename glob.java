@@ -75,23 +75,56 @@ public class glob{
             e.printStackTrace();
         }
 
+        try {
+            Files.walkFileTree(startingDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    if (file.toString().toLowerCase().endsWith(".js")) {
+                        System.out.println(file);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        personalFolder(args);
     }
-}
 
-
-    
-
-   
-    
-
-
-    
-
+    public static void personalFolder(String[] args){
         
+        String rootPath = "/home/rnzaou";  
+
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "--root":
+                case "-r":
+                    if (i + 1 < args.length) {
+                        rootPath = args[++i];
+                    }
+                    break;
+              
+            }
+        }
+
+        Path startingDir = Paths.get(rootPath);
+        try {
+            Files.walkFileTree(startingDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                    System.out.println(file);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    
 
 
-
-
-
-  
-
+}
