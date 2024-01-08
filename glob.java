@@ -4,9 +4,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 
@@ -126,5 +129,37 @@ public class glob{
 
     
 
+     public static void delete(String[] args) {
+
+        
+        String targetFile = "/tmp";
+        //HashSet permet de crée une collection d'objets
+        Set<String> filesToExclude = new HashSet<>();
+        filesToExclude.add("/tmp/important.txt");
+        filesToExclude.add("/tmp/tres-important.txt");
+
+        Path startingDir = Paths.get(targetFile);
+        try {
+            Files.walkFileTree(startingDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    if (!filesToExclude.contains(file.toString())) {
+                        Files.delete(file);
+                        System.out.println("Supprimé: " + file);
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+   
 
 }
