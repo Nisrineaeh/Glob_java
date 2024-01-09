@@ -160,6 +160,28 @@ public class glob{
         }
     }
 
+     public static void copy(String[] args){
+        
+          String sourceDirectory = "/home/rnzaou/";
+        String targetDirectory = "/var/backups/filename.bak"; 
+
+        Path sourceDir = Paths.get(sourceDirectory);
+        Path targetDir = Paths.get(targetDirectory);
+        try {
+            Files.walkFileTree(sourceDir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Path destination = targetDir.resolve(sourceDir.relativize(file));
+                    Files.copy(file, destination, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("Copié: " + file + " -> " + destination);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
    
 
 }
