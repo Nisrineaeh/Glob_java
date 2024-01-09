@@ -94,6 +94,8 @@ public class glob{
 
 
         personalFolder(args);
+        delete(args);
+        copy(args);
     }
 
     public static void personalFolder(String[] args){
